@@ -1,1 +1,2 @@
-export const Greeter = (name: string) => `Hello ${name}`; 
+import { D4Sign } from './d4sign';
+export { D4Sign };
