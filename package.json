@@ -1,9 +1,10 @@
 {
   "name": "d4sign",
-  "version": "1.0.1",
+  "version": "1.0.11",
   "description": "D4Sign sdk typescript",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "license": "MIT",
   "scripts": {
     "test": "jest --config jestconfig.json",
     "build": "tsc",
@@ -32,11 +33,9 @@
     "d4sign typescript",
     "d4sign typescript sdk",
     "d4sign javascript sdk",
-    "https://d4sign.com.br",
     "d4sign.com.br"
   ],
   "author": "hikinine",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/hikinine/d4sign/issues"
   },
