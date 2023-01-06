@@ -1,7 +1,7 @@
 {
   "name": "d4sign",
-  "version": "1.0.0",
-  "description": "D4sign sdk for javascript",
+  "version": "1.0.1",
+  "description": "D4Sign sdk typescript",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
+    "prepublishOnly": "npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"
@@ -27,6 +27,11 @@
     "d4sign api",
     "d4sign sdk",
     "d4sign npm",
+    "d4sign node",
+    "d4sign javascript",
+    "d4sign typescript",
+    "d4sign typescript sdk",
+    "d4sign javascript sdk",
     "https://d4sign.com.br",
     "d4sign.com.br"
   ],

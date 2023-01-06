@@ -16,7 +16,7 @@ import {
   DocumentUploadAttachmentInput,
   DocumentUploadAttachmentOutput,
   DocumentUploadInput,
-  DocumentUploadOutput
+  DocumentUploadOutput,
 } from './../interface/document';
 import { HttpClientRequestProps, Method } from './../interface/http-client';
 
@@ -93,8 +93,7 @@ export class Document {
       },
     };
     const body = new FormData();
-    if (uuid_folder)
-      body.append('uuid_folder', uuid_folder);
+    if (uuid_folder) body.append('uuid_folder', uuid_folder);
     body.append('file', file);
     request.body = body;
     return this.http.resolve<DocumentUploadOutput>(request);
@@ -148,7 +147,7 @@ export class Document {
     };
 
     if (uuid_folder) {
-      Object.defineProperty(request.body, "uuid_folder", { value: uuid_folder })
+      Object.defineProperty(request.body, 'uuid_folder', { value: uuid_folder });
     }
     return this.http.resolve<DocumentCreateFromWordTemplateOutput>(request);
   }
@@ -181,8 +180,7 @@ export class Document {
   static createInstance(http: HttpClient, credentials: D4SignCredentials) {
     return new Document(http, credentials);
   }
-  private constructor(private http: HttpClient, private credentials: D4SignCredentials) { }
-
+  private constructor(private http: HttpClient, private credentials: D4SignCredentials) {}
 
   private static decodeStatus(status: DocumentStatus) {
     switch (status) {

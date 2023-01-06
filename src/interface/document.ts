@@ -79,7 +79,7 @@ export interface DocumentUploadWithBase64FormatInput {
   mime_type: string;
   name?: string;
 }
-export type DocumentUploadWithBase64FormatOutput  = void
+export type DocumentUploadWithBase64FormatOutput = void;
 
 export type Variables = { [variables: string]: string };
 export interface DocumentCreateFromWordTemplateInput {

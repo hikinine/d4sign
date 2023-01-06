@@ -1,4 +1,3 @@
-
 export function isNumberString(n: unknown) {
   return /^\d+$/.test(String(n));
 }
