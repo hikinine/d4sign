@@ -10,13 +10,15 @@ import {
   DocumentListByStatusOutput,
   DocumentListInput,
   DocumentListOutput,
+  DocumentListTemplatesOutput,
+  DocumentListTemplatesUnparsedOutput,
   DocumentSendInput,
   DocumentSendOutput,
   DocumentStatus,
   DocumentUploadAttachmentInput,
   DocumentUploadAttachmentOutput,
   DocumentUploadInput,
-  DocumentUploadOutput,
+  DocumentUploadOutput
 } from './../interface/document';
 import { HttpClientRequestProps, Method } from './../interface/http-client';
 
@@ -125,6 +127,22 @@ export class Document {
     request.body = body;
     return this.http.resolve<DocumentUploadAttachmentOutput>(request);
   }
+
+  /**
+   * Esse objeto irá retornar todos os templates criados em sua conta.
+   * @link https://docapi.d4sign.com.br/docs/endpoints-2#posttemplates
+   */
+  async listTemplates(): Promise<DocumentListTemplatesOutput[]> {
+    const request: HttpClientRequestProps = {
+      credentials: this.credentials,
+      method: Method.Post,
+      endpoint: `/templates`,
+    };
+
+    const data = await this.http.resolve<DocumentListTemplatesUnparsedOutput>(request);
+    return Array.from(Object.values(data))
+  }
+
   /**
    * Esse objeto irá gerar um documento em seu cofre a partir de um template word.
    * @param props.uuid_safe (required) ID do documento
@@ -180,7 +198,7 @@ export class Document {
   static createInstance(http: HttpClient, credentials: D4SignCredentials) {
     return new Document(http, credentials);
   }
-  private constructor(private http: HttpClient, private credentials: D4SignCredentials) {}
+  private constructor(private http: HttpClient, private credentials: D4SignCredentials) { }
 
   private static decodeStatus(status: DocumentStatus) {
     switch (status) {

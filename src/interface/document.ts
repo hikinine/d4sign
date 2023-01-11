@@ -101,3 +101,16 @@ export interface DocumentSendInput {
 export interface DocumentSendOutput {
   message: string;
 }
+
+export interface DocumentListTemplatesUnparsedOutput {
+  [key: string]: DocumentListTemplatesOutput
+}
+
+export interface DocumentListTemplatesOutput {
+  id: string ,
+  name: string 
+  type: "word" | "html",
+  variables: string[]
+}
+
+
