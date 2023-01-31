@@ -92,6 +92,15 @@ export interface DocumentCreateFromWordTemplateOutput {
   uuid: string;
 }
 
+export interface DocumentCreateFromHTMLTemplateOutput {
+  uuid: string;
+}
+export interface DocumentCreateFromHTMLTemplateInput {
+  uuid_safe: string; // ID do cofre
+  name_document: string;
+  uuid_folder?: string;
+  templates: { [uuidTemplate: string]: Variables };
+}
 export interface DocumentSendInput {
   uuid_document: string;
   message?: string;
@@ -114,3 +123,54 @@ export interface DocumentListTemplatesOutput {
 }
 
 
+
+
+export interface DocumentCancelInput {
+  uuid_document: string;
+  "comment"?: string 
+}
+export interface DocumentCancelOutput {
+  "uuidDoc": string
+  "nameDoc": string
+  "type":  string
+  "size": string
+  "pages": string
+  "uuidSafe": string
+  "safeName": string
+  "statusId": string
+  "statusName": string
+  "statusComment": string
+  "whoCanceled": string
+}
+
+export interface DocumentGenerateDownloadLinkInput {
+  uuid_document: string;
+  "type"?: "ZIP" | "PDF",
+  "language"?: "pt" | "en"
+}
+export interface DocumentGenerateDownloadLinkOutput {
+  "url": string
+  "name": string
+}
+
+export interface DocumentResendToSignerInput {
+  uuid_document: string
+  "email": string
+  "key_signer": string
+}
+export interface DocumentResendToSignerOutput {
+  "message": string
+}
+
+export interface DocumentAddHighlightInput {
+  uuid_document: string 
+  key_signer: string
+  email: string
+  text: string
+}
+export interface DocumentAddHighlightOutput {
+  success: number,
+  email: string
+  "key_signer": string
+  "text": string
+}

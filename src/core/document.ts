@@ -3,8 +3,16 @@ import { normalizeStringBooleanLikeInput } from '../utils/normalizeStringBoolean
 import { HttpClient } from './../http-client';
 import { D4SignCredentials } from './../interface/d4sign';
 import {
+  DocumentAddHighlightInput,
+  DocumentAddHighlightOutput,
+  DocumentCancelInput,
+  DocumentCancelOutput,
+  DocumentCreateFromHTMLTemplateInput,
+  DocumentCreateFromHTMLTemplateOutput,
   DocumentCreateFromWordTemplateInput,
   DocumentCreateFromWordTemplateOutput,
+  DocumentGenerateDownloadLinkInput,
+  DocumentGenerateDownloadLinkOutput,
   DocumentGetOutput,
   DocumentListByStatusInput,
   DocumentListByStatusOutput,
@@ -12,6 +20,8 @@ import {
   DocumentListOutput,
   DocumentListTemplatesOutput,
   DocumentListTemplatesUnparsedOutput,
+  DocumentResendToSignerInput,
+  DocumentResendToSignerOutput,
   DocumentSendInput,
   DocumentSendOutput,
   DocumentStatus,
@@ -171,6 +181,33 @@ export class Document {
   }
 
   /**
+   * Esse objeto irá gerar um documento em seu cofre a partir de um template html
+   * @param props.uuid_safe (required) ID do documento
+   * @param props.name_document (required) Nome do documento
+   * @param props.templates - template with variables (required)
+   * @link https://docapi.d4sign.com.br/reference/documento-a-partir-do-template-html
+   */
+  async createFromHtmlTemplate(
+    props: DocumentCreateFromHTMLTemplateInput,
+  ): Promise<DocumentCreateFromHTMLTemplateOutput> {
+    const { uuid_safe, name_document, templates, uuid_folder } = props;
+    const request: HttpClientRequestProps = {
+      credentials: this.credentials,
+      method: Method.Post,
+      endpoint: `/documents/${uuid_safe}/makedocumentbytemplate`,
+      body: {
+        name_document,
+        templates,
+      } as { [key: string]: string | object },
+    };
+
+    if (uuid_folder) {
+      Object.defineProperty(request.body, 'uuid_folder', { value: uuid_folder });
+    }
+    return this.http.resolve<DocumentCreateFromHTMLTemplateOutput>(request);
+  }
+
+  /**
    * Enviará o documento para assinatura, ou seja, o documento entrará na fase 'Aguardando assinaturas', onde, a partir dessa fase, os signatários poderão assinar os documentos.
    * @param props.uuid_document (required) ID do documento
    * @param props.workflow (required) Caso o parâmetro workflow seja definido como 1, o segundo signatário só receberá a mensagem de que há um documento aguardando sua assinatura DEPOIS que o primeiro signatário efetuar a assinatura, e assim sucessivamente. 	Porém, caso seja definido como 0, todos os signatários poderão assinar o documento ao mesmo tempo.
@@ -193,6 +230,90 @@ export class Document {
     request.body.tokenAPI = this.credentials.tokenAPI;
 
     return this.http.resolve<DocumentSendOutput>(request);
+  }
+
+  /**
+   * Esse objeto irá cancelar o documento.
+   * @param props.uuid_document (required) ID do documento
+   * @param props.comment (required) Insira um comentário sobre o cancelamento.
+   * @link https://docapi.d4sign.com.br/docs/endpoints-2#postdocumentsuuid-documentcancel
+   */
+  async cancel(props: DocumentCancelInput): Promise<DocumentCancelOutput> {
+    const { comment, uuid_document } = props
+    const request: HttpClientRequestProps = {
+      credentials: this.credentials,
+      method: Method.Post,
+      endpoint: `/documents/${uuid_document}/cancel`,
+      body: {
+        comment
+      }
+    };
+    return this.http.resolve<DocumentCancelOutput>(request);
+  }
+
+  /**
+   * Esse objeto irá cancelar o documento.
+   * @param props.uuid_document (required) ID do documento
+   * @param props.type (optional) Para realizar o download do arquivo completo, escolha ZIP nesse atributo. Para realizar o download apenas do PDF, escolha PDF nesse atributo.
+   * @param props.language  (optional) pt | en
+   * @link https://docapi.d4sign.com.br/docs/endpoints-2#postdocumentsuuid-documentdownload
+   */
+  async generateDownloadLink(props: DocumentGenerateDownloadLinkInput): Promise<DocumentGenerateDownloadLinkOutput> {
+    const { language, type, uuid_document } = props
+    const request: HttpClientRequestProps = {
+      credentials: this.credentials,
+      method: Method.Post,
+      endpoint: `/documents/${uuid_document}/download`,
+      body: {
+        language,
+        type
+      }
+    };
+    return this.http.resolve<DocumentGenerateDownloadLinkOutput>(request);
+  }
+
+  /**
+   * Esse objeto irá reenviar o link de assinatura para o signatário
+   * @param props.uuid_document (required) ID do documento
+   * @param props.email Email ou WhatsApp do signatário que deverá receber o link novamente.
+   * @param props.key_signer id do signer
+   * @link https://docapi.d4sign.com.br/docs/endpoints-2#postdocumentsuuid-documentresend
+   */
+  async resendToSigner(props: DocumentResendToSignerInput): Promise<DocumentResendToSignerOutput> {
+    const { email, key_signer, uuid_document } = props
+    const request: HttpClientRequestProps = {
+      credentials: this.credentials,
+      method: Method.Post,
+      endpoint: `/documents/${uuid_document}/resend`,
+      body: {
+        key_signer,
+        email
+      }
+    };
+    return this.http.resolve<DocumentResendToSignerOutput>(request);
+  }
+
+  /**
+   * Esse objeto cadastrará as informações (texto) para serem destacadas para o signatário
+   * @param props.uuid_document (required) ID do documento
+   * @param props.email E-mail do signatário cadastrado
+   * @param props.key_signer id do signer
+   * @param props.text Cláusula que será destacada
+   * @link https://docapi.d4sign.com.br/docs/endpoints-2#postdocumentsuuid-documentaddhighlight 
+   */
+  async addHighlight(props: DocumentAddHighlightInput): Promise<DocumentAddHighlightOutput> {
+    const { email, key_signer, uuid_document, text } = props
+    const request: HttpClientRequestProps = {
+      credentials: this.credentials,
+      method: Method.Post,
+      endpoint: `/documents/${uuid_document}/addhighlight`,
+      body: {
+        key_signer,
+        email,
+        text
+      }
+    };
+    return this.http.resolve<DocumentAddHighlightOutput>(request);
   }
 
   static createInstance(http: HttpClient, credentials: D4SignCredentials) {
