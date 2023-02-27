@@ -6,7 +6,7 @@ import {
   SignerCreateManyActDecode,
   SignerCreateManyInput,
   SignerCreateManyInputAct,
-  SignerCreateOutput,
+  SignerCreateOutput
 } from './../interface/signers';
 
 export class Signers {
@@ -33,7 +33,9 @@ export class Signers {
       credentials: this.credentials,
       method: Method.Post,
       endpoint: `/documents/${uuid_document}/createlist`,
-      body: payload,
+      body: {
+        signers: payload
+      },
     };
     return this.http.resolve<SignerCreateOutput>(request);
   }

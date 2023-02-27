@@ -115,10 +115,11 @@ export interface DocumentListTemplatesUnparsedOutput {
   [key: string]: DocumentListTemplatesOutput
 }
 
+type DocumentListTemplatesOutputType = "word" | "html"
 export interface DocumentListTemplatesOutput {
-  id: string ,
-  name: string 
-  type: "word" | "html",
+  id: string,
+  name: string
+  type: DocumentListTemplatesOutputType,
   variables: string[]
 }
 
@@ -127,43 +128,45 @@ export interface DocumentListTemplatesOutput {
 
 export interface DocumentCancelInput {
   uuid_document: string;
-  "comment"?: string 
+  comment?: string
 }
 export interface DocumentCancelOutput {
-  "uuidDoc": string
-  "nameDoc": string
-  "type":  string
-  "size": string
-  "pages": string
-  "uuidSafe": string
-  "safeName": string
-  "statusId": string
-  "statusName": string
-  "statusComment": string
-  "whoCanceled": string
+  uuidDoc: string
+  nameDoc: string
+  type: string
+  size: string
+  pages: string
+  uuidSafe: string
+  safeName: string
+  statusId: string
+  statusName: string
+  statusComment: string
+  whoCanceled: string
 }
 
+type DocumentGenerateDownloadLinkInputType = "ZIP" | "PDF"
+type DocumentGenerateDownloadLinkInputLanguage = "pt" | "en"
 export interface DocumentGenerateDownloadLinkInput {
   uuid_document: string;
-  "type"?: "ZIP" | "PDF",
-  "language"?: "pt" | "en"
+  type?: DocumentGenerateDownloadLinkInputType,
+  language?: DocumentGenerateDownloadLinkInputLanguage
 }
 export interface DocumentGenerateDownloadLinkOutput {
-  "url": string
-  "name": string
+  url: string
+  name: string
 }
 
 export interface DocumentResendToSignerInput {
   uuid_document: string
-  "email": string
-  "key_signer": string
+  email: string
+  key_signer: string
 }
 export interface DocumentResendToSignerOutput {
-  "message": string
+  message: string
 }
 
 export interface DocumentAddHighlightInput {
-  uuid_document: string 
+  uuid_document: string
   key_signer: string
   email: string
   text: string
@@ -171,6 +174,6 @@ export interface DocumentAddHighlightInput {
 export interface DocumentAddHighlightOutput {
   success: number,
   email: string
-  "key_signer": string
-  "text": string
+  key_signer: string
+  text: string
 }
